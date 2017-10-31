@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>动态原型模式</title>
+	<link rel="stylesheet" href="">
+</head>
+<body>
+	
+
+	<script type="text/javascript"> 
+		function Person(name, age, job) {
+			//属性
+			this.name = name;
+			this.age = age;
+			this.job = job;
+
+			//方法
+			if(typeof this.sayName != "function") {
+				Person.prototype.sayName = function() {
+					alert(this.name);
+				}
+			}
+		}
+
+		var friend = new Person('wuson', 23, 'software engineer');
+		friend.sayName();
+	</script>
+</body>
+</html>

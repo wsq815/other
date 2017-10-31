@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>原型链</title>
+	<link rel="stylesheet" href="">
+</head>
+<body>
+	
+	<script type="text/javascript">
+		/*
+			继承主要是依靠原型链来实现的
+		 */
+		//继承的基本思路利用原型让一个引用类型继承另一个引用类型的属性和方法（让原型对象等于另一个类型的实例）
+		function SuperType() {
+			this.property = true;
+		}
+
+		SuperType.prototype.getSuperValue = function() {
+			return this.property;
+		}
+
+		function SubType() {
+			this.subproperty = false;
+		}
+
+		//继承SuperType
+		SubType.prototype = new SuperType();
+
+		SubType.prototype.getSubValue = function() {
+			return this.subproperty;
+		}
+
+		var instance = new SubType();
+		//alert(instance.getSuperValue());
+
+		//instance.constructor现在指向的是Supertype，这是因为原来SubType的原型指向了另一个对象SuperType的原型，而这个原型对象的constructor属性指向的是SuperType
+		// alert(instance.constructor == SuperType);		
+		// 默认的原型Oject，所有引用类型默认都继承了Object
+
+		//确定原型与实例的关系
+		//第一种方法：使用instanceof操作符
+		/*alert(instance instanceof Object);
+		alert(instance instanceof SuperType);
+		alert(instance instanceof subType);*/
+		//由于原型链的关系，我们可以说instance是Object、SuperType和subType中任何一种类型的实例
+
+		//第二种方法：使用isPrototypeof方法
+		// alert(Object.prototype.isPrototypeOf(instance));
+		// alert(SuperType.prototype.isPrototypeOf(instance));		
+		// alert(SubType.prototype.isPrototypeOf(instance));
+	
+		//通过原型链实现继承时，不能使用字面量创建原型方法，因为这样做就会重写原型链
+
+		/*function SuperType() {
+			this.property = true;
+		}
+
+		SuperType.prototype.getSuperValue = function() {
+			return this.property;
+		}
+
+		function SubType() {
+			this.subproperty = false;
+		}
+
+		//继承SuperType
+		SubType.prototype = new SuperType();
+		
+		//使用字面量添加新方法，会导致上一行的代码无效
+		SubType.prototype = {
+			getSubValue: function() {
+				return this.subproperty;
+			},
+			someOtherMethod: function() {
+				return false;
+			}
+		}
+		var instance = new SubType();
+		alert(instance.getSuperValue());  //error*/
+		//报错原因是重新了SubType原型(SubType.protoType) 重写的SubType的constructor属性指向Obejct切断了与SuperType的联系（可参考原型中原型对象重写的原理图）
+	
+		//原型链的问题
+		//第一个引用类型值的原型属性会被实例共享，这也是为什么要在构造函数定义此属性而不是在原型对象中定义的原因。
+		//一下代码来说明这个问题
+		function SuperType() {
+			this.colors = ["red", "blue", "green"]
+		}
+
+		function SubType() {}
+		
+		//继承SuperType
+		SubType.prototype = new SuperType();
+
+		var instance1 = new SubType();
+		instance1.colors.push("black");
+		alert(instance1.colors);
+
+		var instance2 = new SubType();
+		alert(instance2.colors);
+
+		//原因是 Subtype.prototype 实现了继承是SuperType原型的实例了，且colors不是原型属性所以SuperType保存了colors属性
+		//即原型SubType.prototype中有了colors属性。
+
+		//第二个问题是在创建子类实例时，不能向超类型的构造函数中传递参数
+		//因为这两个问题，实践中一般很少会单独使用原型链
+
+		 
+
+	</script>	
+</body>
+</html>

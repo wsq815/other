@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>原型模式</title>
+	<link rel="stylesheet" href="">
+</head>
+<body>
+	
+	<script type="text/javascript">
+
+		
+
+		// 创建一个函数就会根据特定的规定创建一个prototype属性，prototype会指向函数的原型对象
+		// 所有的原型对象会自动获得一个constructor（构造函数）属性，这个属性包含一个指向prototype所在函数的指针
+		// 那上面例子来讲Person.prototype.constructor 指向 Person
+		//isPrototypeOf（）(用来确定实例中[[Prototpe]]属性是否指向函数的原型对象)用法如下所示
+		//getPrototypeOf（）(得到实例的原型对象)用法如下所示
+		//hasOwnProperty（）（该方法从Object继承而来,判断实例中是否有某个属性）
+		//in操作符在通过对象能够访问给定属性时返回true，无论该属性存在实力还是原型中，用法如下所示
+		//Object.keys()这个方法接收一个对象作为参数，返回一个可枚举属性字符串的数组
+		//如果想得到所用实例的属性，无论是否可以枚举，都可以使用Oject.getOwnPropertyNames() 接受一个实例的原型对象;
+		//Obect.keys() 和 Object.getOwnPropertyNames()都可以替代for-in循环
+		//原型对象的问题（由于原型中的属性是共享的，当一个实例修改原型里引用类型值的属性时，其它引用该属性的实例也会受影响）
+
+		String.prototype.startWith = function(text) {
+			return this.indexOf(text) == 0;
+		}
+		var msg = "hello world";
+		alert(msg.startWith("hello"));
+		console.log(String.prototype);
+		
+		/*function Person(){
+
+		}
+		var friend  = new Person();
+		Person.prototype = {
+			name: "wuson",
+			age: 23,
+			job: 'sofrware engineer',
+			sayName: function() {
+				alert(this.name);
+			}
+		}
+		friend.dayName();  //error*/
+		//因为重写原型对象切断了现有原型与任何之前存在的对象实例之间的联系，它们引用的仍然是最初的原型
+
+		
+		/*function Person(){
+
+		}
+		Person.prototype = {
+			name: "wuson",
+			age: 23,
+			job: 'sofrware engineer',
+			sayName: function() {
+				alert(this.name);
+			}
+		}*/
+		//这个方法将导致constructor属性不再指向Person（指向Object构造函数）
+		//如果直接在Person.prototype = {}中添加constructor:Person的话，会导致[[Enumerable]]特性被设置为true,默认是原生的constructor
+		//属性是不可枚举的。可以使用Object.defineProperty()去定义即
+		//Object.defineProperty(Person.prototype,"constructor",{enumerable: false, value:Person});
+
+
+		// function Person() {}
+		// Person.prototype.name = 'wuson';
+		// Person.prototype.age = '23';
+		// Person.prototype.sayName = function() {
+		// 	alert(this.name);
+		// }
+		// var person1 = new Person();
+		// //person1.sayName();
+		// var person2 = new Person();
+		//person2.sayName();
+		// //alert(person1.sayName === person2.sayName);
+		// alert(Person.prototype.isPrototypeOf(person1));
+		// alert(Person.prototype.isPrototypeOf(person2));	
+		//alert(Object.getPrototypeOf(person1).constructor);
+		//alert(Object.getPrototypeOf(person1).name);
+		//person1.name = "xiaohong";
+		//alert(person1.name);
+		//delete person1.name;
+		//alert(person1.name);
+		//alert(person1.hasOwnProperty("name"));
+		//alert("name" in person1);
+		//判断属性存在于对象中还是存在于原型中(返回true是证明在原型，否则在实例)
+		// function hasPrototypeProperty(object, name){
+		// 	return !object.hasOwnProperty(name) && (name in object);
+		// }
+		// alert(hasPrototypeProperty(person1,"name"));
+		// person2.name = "xiaohong";
+		// alert(hasPrototypeProperty(person2,"name"));
+
+		//console.log(Array.prototype);
+	</script>
+</body>
+</html>

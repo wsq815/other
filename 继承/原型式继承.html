@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>原型式继承</title>
+	<link rel="stylesheet" href="">
+</head>
+<body>
+	
+	<script type="text/javascript">
+		//原理是借助原型可以基于已有的对象创建新对象，同时还不必因此创建自定义类型。如下函数
+		function object(o){
+			function F(){}
+			F.prototype = o;
+			return new F();
+		}
+
+		var person = {
+			name: 'wuson',
+			friends: ['111','222','333']
+		}
+
+		var anotherPerson = object(person);
+		anotherPerson.name = "Greg";
+		anotherPerson.friends.push("444");
+
+		var yetAnotherPerson = object(person);
+		yetAnotherPerson.name = 'xiaohong';
+		yetAnotherPerson.friends.push("555");
+		
+		alert(person.friends);
+
+	</script>
+</body>
+</html>

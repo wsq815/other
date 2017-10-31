@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>借用构造函数</title>
+	<link rel="stylesheet" href="">
+</head>
+<body>
+	
+
+	<script type="text/javascript">
+
+		//借用构造函数的基本思想是子类型构造函数的内部调用超类型构造函数
+
+		// function SuperType() {
+		// 	this.colors = ['red', 'green', 'blue'];
+		// }
+
+		// function SubType() {
+		// 	//继承了SuperType
+		// 	SuperType.call(this);
+		// }
+
+		// var instance1 = new SubType();
+		// instance1.colors.push("black");
+		// alert(instance1.colors);
+
+		// var instance2 = new SubType();
+		// alert(instance2.colors);
+
+		//相对原型链而言，借用构造函数有一个很大的优势，即可以在子类型构造函数中向超类型构造函数传递参数
+		function SuperType(name) {
+			this.name = name;
+		}
+	
+		function SubType() {
+			//继承了SuperType，同时还传递了参数
+			SuperType.call(this, 'wuson');
+
+			//实例属性
+			this.age = 29;
+		}
+
+		var instance = new SubType();
+		alert(instance.name);
+		alert(instance.age);
+
+
+	</script>
+</body>
+</html>
